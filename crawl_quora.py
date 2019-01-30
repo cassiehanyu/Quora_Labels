@@ -5,7 +5,7 @@ import re
 import string
 import time
 
-count = 0
+count = 80000
 file_path_base = "crawled/query_content_4_{}.json"
 # file_path_base = "crawled/test.json"
 file_path = ""
@@ -21,8 +21,15 @@ def get_query_page(query):
     processed = processed.strip().replace(" ", "-")
 
     url = url.format(processed)
+
+    DEFAULT_REQUEST_HEADERS = {'Accept': 'text/plain, text/html',
+                          'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
+                          'REFERER': 'www.google.com'}
+
+    USER_AGENT = "Mozilla/5.0 (X11; Linux i686; rv:10.0) Gecko/20100101 Firefox/10.0"
+
     try:
-        ret = requests.get(url, timeout=10)
+        ret = requests.get(url, headers=DEFAULT_REQUEST_HEADERS,  timeout=10)
 
         if ret.status_code == 403:
             print("forbidden started...")
@@ -42,7 +49,7 @@ def get_query_page(query):
         # print(query)
 
 
-with open('Quora3.txt') as f:
+with open('test.txt') as f:
     sentence = f.readlines()
 
 for sent in tqdm(sentence):
