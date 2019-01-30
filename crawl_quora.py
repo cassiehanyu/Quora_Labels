@@ -61,4 +61,4 @@ for sent in tqdm(sentence):
     get_query_page(sent)
 
     count += 1
-    time.sleep(0.4)
+    time.sleep(1.5)
