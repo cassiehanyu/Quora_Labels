@@ -2,6 +2,7 @@ from html.parser import HTMLParser
 import json
 from bs4 import BeautifulSoup
 import re
+import os
 
 json_format = '{{\'id\':{}, \'url\':\'{}\', \'topics\':{}, \'answers\': {}, \'related_questions\':{}}},'
 answers_format = '{{\'answer\':\'{}\', \'answer_url\':\'{}\', \'num_views\':\'{}\', \'author_url\':\'{}\', \'answered_at\':\'{}\'}},'
@@ -9,6 +10,8 @@ answers_format = '{{\'answer\':\'{}\', \'answer_url\':\'{}\', \'num_views\':\'{}
 base = '/home/leon/'
 title_list = ["ui_qtext_rendered_qtext","rendered_qtext"]
 label_list = ["HoverMenu TopicNameLink topic_name","TopicNameLink HoverMenu topic_name"]
+
+f1 = open('query_labels_4.csv', 'w+')
 
 
 def parse_to_json(raw, uri=""):
@@ -55,14 +58,30 @@ def parse_to_json(raw, uri=""):
             r["url"] = item.get("href")
             record["related"].append(r)
 
-    print(record['labels'])
+    labels = record["labels"]
+    tags = []
+    for label in labels:
+        if label['url'] is not None:
+            print(label['label'])
+            # tags.append(label['label'])
+
+    # f1.write(','.join(tags) + "\n")
+    print("labels:", record['labels'])
+    f1.write(str(record['labels']))
     # print(json.dumps(record,ensure_ascii=False))
 
+# all_files = os.listdir('crawled')
 
-f = open("crawled/query_content0.json")
+# for file_name in all_files:
+#     if file_name.startswith("query_content_4")
+
+
+
+f = open("crawled/query_content_0_0.json")
 
 for line in f.readlines():
-	data = json.loads(line)
-	print(data['query'])
-	parse_to_json(data['content'])
+    data = json.loads(line)
+    print("query:", data['query'])
+    f1.write(data['query'].strip() + "\t")
+    parse_to_json(data['content'])
 
