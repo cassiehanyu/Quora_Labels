@@ -11,7 +11,7 @@ base = '/home/leon/'
 title_list = ["ui_qtext_rendered_qtext","rendered_qtext"]
 label_list = ["HoverMenu TopicNameLink topic_name","TopicNameLink HoverMenu topic_name"]
 
-f1 = open('query_labels_5.csv', 'w+')
+f1 = open('query_labels_4.csv', 'w+')
 
 
 def parse_to_json(raw, uri=""):
@@ -63,17 +63,17 @@ def parse_to_json(raw, uri=""):
     for label in labels:
         if label['url'] is not None:
             print(label['label'])
-            # tags.append(label['label'])
+            tags.append(label['label'])
 
     # f1.write(','.join(tags) + "\n")
     print("labels:", record['labels'])
-    f1.write(str(record['labels']) + "\n")
+    f1.write(','.join(tags) + "\n")
     # print(json.dumps(record,ensure_ascii=False))
 
 all_files = os.listdir('crawled')
 
 for file_name in all_files:
-    if file_name.startswith("query_content_5"):
+    if file_name.startswith("query_content_4"):
         f = open("crawled/" + file_name)
 
         for line in f.readlines():
