@@ -5,31 +5,36 @@ import re
 import string
 import time
 
-count = 80000
+count = 0
 file_path_base = "crawled/query_content_4_{}.json"
 # file_path_base = "crawled/test.json"
 file_path = ""
-punctuation = '!"#$%&\'()*,.:;<=>?@[\\]^_`{|}~'
+# punctuation = '!"#$%\'()*:;<=>?@[\\]^_`{|}~'
+
+punctuation = '!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
+
 
 def get_query_page(query):
     url = "https://www.quora.com/{}"
-    processed = re.sub('[%s]' % re.escape(punctuation), '', query)
-    processed = processed.strip().replace("-", " ")
-    processed = processed.strip().replace("/", " ")
+    processed = re.sub('[%s]' % re.escape(punctuation), ' ', query)
+    # processed = processed.strip().replace("-", " ")
+    # processed = processed.strip().replace("/", " ")
+    # processed = processed.strip().replace(",", " ")
+    # processed = processed.strip().replace("&", " ")
+
 
     processed = re.sub(' +', ' ', processed).strip()
     processed = processed.strip().replace(" ", "-")
-
     url = url.format(processed)
 
-    DEFAULT_REQUEST_HEADERS = {'Accept': 'text/plain, text/html',
-                          'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
-                          'REFERER': 'www.google.com'}
+    # DEFAULT_REQUEST_HEADERS = {'Accept': 'text/plain, text/html',
+    #                       'User-Agent': 'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
+    #                       'REFERER': 'www.google.com'}
 
-    USER_AGENT = "Mozilla/5.0 (X11; Linux i686; rv:10.0) Gecko/20100101 Firefox/10.0"
+    # USER_AGENT = "Mozilla/5.0 (X11; Linux i686; rv:10.0) Gecko/20100101 Firefox/10.0"
 
     try:
-        ret = requests.get(url, headers=DEFAULT_REQUEST_HEADERS,  timeout=10)
+        ret = requests.get(url, timeout=10)
 
         if ret.status_code == 403:
             print("forbidden started...")
@@ -62,3 +67,4 @@ for sent in tqdm(sentence):
 
     count += 1
     time.sleep(1.5)
+
